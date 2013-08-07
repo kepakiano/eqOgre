@@ -23,8 +23,8 @@ project(eqOgre C CXX)
 # Main application: VRCalib
 #
 find_package(GLUT REQUIRED)
-find_package(PkgConfig)
-pkg_check_modules(EQUALIZER REQUIRED Equalizer)
+find_package(Equalizer REQUIRED)
+find_package(PkgConfig REQUIRED)
 pkg_check_modules(OGRE REQUIRED OGRE)
 
 include_directories(
@@ -42,14 +42,14 @@ link_directories(
     ${OGRE_LIBRARIES}
 )
 
-add_definitions(-DPACKAGE_NAME="eqOgre" -DPACKAGE_VERSION="1.0")
+add_definitions(-DPACKAGE_NAME="eqOgre" -DPACKAGE_VERSION="1.0"
+  -DCO_IGNORE_BYTESWAP)
 
 add_executable(eqOgre
   main.cpp
 
   equalizer/src/channel.cpp
   equalizer/src/config.cpp
-  equalizer/src/eqserialization.cpp
   equalizer/src/framedata.cpp
   equalizer/src/initdata.cpp
   equalizer/src/node.cpp
@@ -80,6 +80,6 @@ target_link_libraries(eqOgre
 
 install(TARGETS eqOgre RUNTIME DESTINATION bin)
 install(FILES
-  configs/config-vrlab-12node.eqc  configs/config-vrlab.eqc  configs/config-vrlab-simulation.eqc
+  configs/vr_lab_simulation.eqc
   DESTINATION share/eqFlyingThings
 )
