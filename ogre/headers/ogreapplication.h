@@ -20,6 +20,11 @@
 #ifndef OGREAPPLICATION_H
 #define OGREAPPLICATION_H
 
+#include <eq/eq.h>
+
+#ifdef override
+#  undef override
+#endif
 #include <OgreRoot.h>
 #include <OgreString.h>
 #include <OgreRenderWindow.h>

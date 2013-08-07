@@ -22,6 +22,9 @@
 
 #include "pipe.h"
 
+#ifdef override
+#  undef override
+#endif
 #include <OgreRenderWindow.h>
 #include <OgreCamera.h>
 
