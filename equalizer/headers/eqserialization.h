@@ -7,13 +7,36 @@
 
 
 /*
- * We have to override these templates, otherwise equalizer would use the wrong
- * methode for serializing our custom classes.
+ * Partial template specializations for our custom classes.
  */
-namespace co{
-    template<> DataOStream& DataOStream::operator << ( const std::vector<SerializableOgreActor > & value );
-    template<> DataIStream& DataIStream::operator >> ( std::vector< SerializableOgreActor  >& value );
-    template<> DataOStream& DataOStream::operator << ( const std::vector<SerializableDiffActor> & value );
-    template<> DataIStream& DataIStream::operator >> ( std::vector< SerializableDiffActor  >& value );
+namespace co
+{
+
+template<> inline
+DataOStream& DataOStream::operator << ( const SerializableOgreActor& value )
+{
+    value.writeToStream(*this);
+    return *this;
+}
+template<> inline
+DataIStream& DataIStream::operator >> ( SerializableOgreActor& value )
+{
+    value.loadFromStream(*this);
+    return *this;
+}
+
+template<> inline
+DataOStream& DataOStream::operator << ( const SerializableDiffActor& value )
+{
+    value.writeToStream(*this);
+    return *this;
+}
+template<> inline
+DataIStream& DataIStream::operator >> ( SerializableDiffActor& value )
+{
+    value.loadFromStream(*this);
+    return *this;
+}
+
 }
 #endif // EQSERIALIZATION_H
