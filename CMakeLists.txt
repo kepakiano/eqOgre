@@ -24,6 +24,7 @@ project(eqOgre C CXX)
 #
 find_package(GLUT REQUIRED)
 find_package(Equalizer REQUIRED)
+find_package(Boost REQUIRED regex)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(OGRE REQUIRED OGRE)
 
@@ -40,6 +41,7 @@ link_directories(
     ${GLUT_LIBRARY_DIRS}
     ${GLEWMX_LIBRARY_DIRS}
     ${OGRE_LIBRARIES}
+    ${Boost_LIBRARY_DIRS}
 )
 
 add_definitions(-DPACKAGE_NAME="eqOgre" -DPACKAGE_VERSION="1.0"
@@ -74,6 +76,7 @@ target_link_libraries(eqOgre
   ${OPENGL_gl_LIBRARY}
   ${OPENGL_glu_LIBRARY}
   ${OGRE_LIBRARIES}
+  ${Boost_REGEX_LIBRARY}
 )
 
 
