@@ -19,21 +19,15 @@
 
 #include "../headers/window.h"
 
-#include <OgreRoot.h>
-
 #include "../headers/node.h"
 #include "../../ogre/headers/ogreapplication.h"
 
-#ifdef GLX
-    #include <X11/Xlib.h>
-    #include <X11/Xutil.h>
-    #include <eq/client/glx/pipe.h>
-    #include <eq/client/glXTypes.h>
-    #include <eq/client/glx/window.h>
-    #undef Status
-#endif
+#include <eq/client/system.h>
+#include <OgreRoot.h>
+#include <boost/regex.hpp>
 
-namespace vr{
+namespace vr
+{
     Window::Window(eq::Pipe *parent)
         : eq::Window(parent), _ogreInitialised(false)
     {
@@ -50,52 +44,44 @@ namespace vr{
         const InitData &init_data = node->getInitData();
 
         // Create objects
-
-        unsigned long         parentWnd;
-        switch (getPipe()->getWindowSystem())
-        {
-
-            case eq::WINDOW_SYSTEM_GLX :
-                eq::GLXWindowIF* _ventana;
-
-                _ventana = (eq::GLXWindowIF*) getSystemWindow();
-                parentWnd = (unsigned long) _ventana->getXDrawable();
-
-                break;
-            default :
-                parentWnd = 0;
-                break;
-        }
+#ifdef GLX
+        eq::glx::WindowIF* glxWindow = dynamic_cast< eq::glx::WindowIF* >(
+                                           getSystemWindow( ));
+        const XID parentWnd = glxWindow ? glxWindow->getXDrawable() : 0;
 
         if( parentWnd )
         {
             Ogre::NameValuePairList params; // typedef std::map<std::string,std::string>
 
-            // TODO: getXDisplay von eq
-            Display* display;
-            display = XOpenDisplay(NULL);//":0.0");
+            Display* const display = glxWindow->getXDisplay();
             XSync(display, false);
+
+            const char* displayString = DisplayString( display );
+            const boost::regex regex( ":([0-9]+)\\." );
+            boost::cmatch match;
+            unsigned displayNum = 0;
+            if( boost::regex_match( displayString, match, regex ))
+                displayNum = std::atoi( match[1].first );
 
             XWindowAttributes wa;
             XGetWindowAttributes( display, parentWnd, &wa );
             Screen* screen = wa.screen;
             Visual* visual = wa.visual;
 
-            int screenNumber   = XScreenNumberOfScreen(screen);
-
+            const int screenNumber = XScreenNumberOfScreen(screen);
             XVisualInfo info;
-            memset(&info, 0, sizeof(XVisualInfo));
+            lunchbox::setZero( &info, sizeof( XVisualInfo ));
 
-            info.visual      = visual;
-            info.visualid   = XVisualIDFromVisual(visual);
-            info.screen      = screenNumber;
-            info.depth      = 32;
+            info.visual = visual;
+            info.visualid = XVisualIDFromVisual(visual);
+            info.screen = screenNumber;
+            info.depth = 32;
 
-            params["externalWindowHandle"] =  Ogre::StringConverter::toString(reinterpret_cast<unsigned long>(display))
-                    + ":" +
-                            Ogre::StringConverter::toString(static_cast<unsigned int>(screenNumber)) + ":" +
-                            Ogre::StringConverter::toString(static_cast<unsigned long>(parentWnd)) + ":" +
-                            Ogre::StringConverter::toString(reinterpret_cast<unsigned long>(&info));
+            params["externalWindowHandle"] =
+                Ogre::StringConverter::toString( displayNum ) + ":" +
+                Ogre::StringConverter::toString( unsigned(screenNumber)) + ":" +
+                Ogre::StringConverter::toString( unsigned( parentWnd )) + ":" +
+                Ogre::StringConverter::toString( size_t( &info ));
 
             params["externalGLControl"] = Ogre::String("True");
 
@@ -104,13 +90,15 @@ namespace vr{
             // create window by size of pvp.
             Pipe *pipe = static_cast<Pipe *>(getPipe());
             Ogre::Root *root = pipe->_ogre->getRoot();
-            mWindow = root->createRenderWindow(getName(), pvp.w, pvp.h, false, &params );
+            mWindow = root->createRenderWindow( getName(), pvp.w, pvp.h, false,
+                                                &params );
             mWindow->setActive(true);
             mWindow->setDeactivateOnFocusChange(false);
 
             return true;
         }
         else
+#endif
             return false;
     }
 

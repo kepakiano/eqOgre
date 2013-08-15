@@ -39,16 +39,15 @@ SerializableOgreActor::SerializableOgreActor(std::string nodeName,
                      std::string entName,
                      std::string materialName,
                      bool castShadows, Vec3 scale)
-    : OgreActor(nodeName, type, position,
-      orientation, meshName, entName,
-                materialName, castShadows, scale)
+    : OgreActor( nodeName, type, position, orientation, meshName, entName,
+                 materialName, castShadows, scale )
 {
 }
 
 SerializableOgreActor::SerializableOgreActor(const SerializableOgreActor& rhs)
-    :SerializableOgreActor(rhs.nodeName(), rhs.type(), rhs.position(),
-                            rhs.orientation(), rhs.meshName(), rhs.entName(),
-                             rhs.materialName(), rhs.castShadows(), rhs.scale())
+    : OgreActor( rhs.nodeName(), rhs.type(), rhs.position(), rhs.orientation(),
+                 rhs.meshName(), rhs.entName(), rhs.materialName(),
+                 rhs.castShadows(), rhs.scale( ))
 {
 
 }
