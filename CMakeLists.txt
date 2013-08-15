@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 2.8)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 cmake_policy(SET CMP0015 NEW)
 
-add_definitions(-std=c++11)
+add_definitions(-std=c++0x)
 
 #
 # Project name and languages
