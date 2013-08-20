@@ -22,6 +22,7 @@
 #include "../headers/node.h"
 #include "../../ogre/headers/ogreapplication.h"
 
+#include <lunchbox/os.h>
 #include <eq/client/system.h>
 #include <OgreRoot.h>
 #include <boost/regex.hpp>
@@ -70,8 +71,12 @@ namespace vr
 
             const int screenNumber = XScreenNumberOfScreen(screen);
             XVisualInfo info;
-            lunchbox::setZero( &info, sizeof( XVisualInfo ));
 
+#if (LUNCHBOX_VERSION_MAJOR >= 1) && (LUNCHBOX_VERSION_MINOR >= 7) &&  (LUNCHBOX_VERSION_PATCH >= 1)
+            lunchbox::setZero( &info, sizeof( XVisualInfo ));
+#else
+            memset(&info, 0, sizeof(XVisualInfo));
+#endif
             info.visual = visual;
             info.visualid = XVisualIDFromVisual(visual);
             info.screen = screenNumber;
