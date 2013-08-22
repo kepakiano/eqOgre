@@ -53,7 +53,7 @@ namespace vr{
         return ret;
     }
 
-    eq::uint128_t Config::startFrame()
+    uint32_t Config::startFrame()
     {
         // Get time, in milliseconds. Can be used for animation purposes.
         frame_data.data.timestamp = getTime();
@@ -78,8 +78,6 @@ namespace vr{
         const eq::uint128_t version = frame_data.commit();
 
         // Start this frame with the committed frame data
-        bool ret = eq::Config::startFrame(version);
-
-        return ret;
+        return eq::Config::startFrame(version);
     }
 }
