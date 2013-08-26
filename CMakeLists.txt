@@ -37,6 +37,7 @@ find_package(GLUT REQUIRED)
 find_package(Equalizer REQUIRED)
 find_package(Boost REQUIRED regex)
 find_package(PkgConfig REQUIRED)
+find_package(X11 REQUIRED)
 pkg_check_modules(OGRE REQUIRED OGRE)
 
 include_directories(
@@ -88,6 +89,7 @@ target_link_libraries(eqOgre
   ${OPENGL_glu_LIBRARY}
   ${OGRE_LIBRARIES}
   ${Boost_REGEX_LIBRARY}
+  ${X11_LIBRARIES}
 )
 
 string(REPLACE "." " " LUNCHBOX_VERSION_LIST "${LUNCHBOX_VERSION}")
