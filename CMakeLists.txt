@@ -1,9 +1,20 @@
-# Copyright (C) 2012
-# Martin Lambers <marlam@marlam.de>
 #
-# Copying and distribution of this file, with or without modification, are
-# permitted in any medium without royalty provided the copyright notice and this
-# notice are preserved. This file is offered as-is, without any warranty.
+# Copyright (C) 2013
+# Sebastian Schmitz <sschmitz@informatik.uni-siegen.de>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
 
 #
 # CMake init stuff
@@ -20,7 +31,7 @@ add_definitions(-std=c++0x)
 project(eqOgre C CXX)
 
 #
-# Main application: VRCalib
+# Main application: eqOgre
 #
 find_package(GLUT REQUIRED)
 find_package(Equalizer REQUIRED)
@@ -79,10 +90,17 @@ target_link_libraries(eqOgre
   ${Boost_REGEX_LIBRARY}
 )
 
-
+string(REPLACE "." " " LUNCHBOX_VERSION_LIST "${LUNCHBOX_VERSION}")
+SEPARATE_ARGUMENTS(LUNCHBOX_VERSION_LIST)
+LIST(GET LUNCHBOX_VERSION_LIST 0 LUNCHBOX_VERSION_MAJOR)
+LIST(GET LUNCHBOX_VERSION_LIST 1 LUNCHBOX_VERSION_MINOR)
+LIST(GET LUNCHBOX_VERSION_LIST 2 LUNCHBOX_VERSION_PATCH)
+add_definitions(-DLUNCHBOX_VERSION_MAJOR=${LUNCHBOX_VERSION_MAJOR})
+add_definitions(-DLUNCHBOX_VERSION_MINOR=${LUNCHBOX_VERSION_MINOR})
+add_definitions(-DLUNCHBOX_VERSION_PATCH=${LUNCHBOX_VERSION_PATCH})
 
 install(TARGETS eqOgre RUNTIME DESTINATION bin)
 install(FILES
   configs/vr_lab_simulation.eqc
-  DESTINATION share/eqFlyingThings
+  DESTINATION configs
 )
