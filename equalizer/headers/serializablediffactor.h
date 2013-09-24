@@ -47,7 +47,7 @@ public:
     virtual void writeToStream(co::DataOStream& os) const;
     virtual void loadFromStream (co::DataIStream& is);
 
-    SerializableDiffActor & operator =(const SerializableDiffActor&);
+//    SerializableDiffActor & operator =(const SerializableDiffActor&);
 
 };
 
