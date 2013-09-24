@@ -45,7 +45,7 @@ namespace vr{
         Config(eq::ServerPtr parent);
         bool init(const InitData &init_data_template);
         virtual bool exit();
-        virtual eq::uint128_t startFrame();
+        virtual uint32_t startFrame();
 
         /**
          * @brief setGameState - Call this method to change the state of the scene graph
