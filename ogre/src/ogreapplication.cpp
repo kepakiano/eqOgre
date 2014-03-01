@@ -38,7 +38,7 @@ Ogre::Quaternion toOgreQuaternion(const Vec4 & vec)
     return Ogre::Quaternion(vec.w(), vec.x(), vec.y(), vec.z());
 }
 
-Ogre::Vector3 toOGreVector3(const Vec3 & vec)
+Ogre::Vector3 toOgreVector3(const Vec3 & vec)
 {
     return Ogre::Vector3(vec.x(), vec.y(), vec.z());
 }
@@ -188,7 +188,7 @@ void OgreApplication::updateNodes(std::list<std::shared_ptr<OgreActor> > newActo
         Ogre::SceneNode *node;
         try {
           node = getSceneManager()->getSceneNode(actor->nodeName());
-          node->setPosition(toOGreVector3(actor->position()));
+          node->setPosition(toOgreVector3(actor->position()));
           node->setOrientation(toOgreQuaternion(actor->orientation()));
         }
         catch (Ogre::ItemIdentityException e){
@@ -207,7 +207,7 @@ void OgreApplication::addActor(std::shared_ptr<OgreActor> actor)
 
         Ogre::SceneNode *node;
         node = mSceneMgr->getRootSceneNode()->createChildSceneNode(actor->nodeName());
-        node->setPosition(toOGreVector3(actor->position()));
+        node->setPosition(toOgreVector3(actor->position()));
         node->setOrientation(toOgreQuaternion(actor->orientation()));
         node->scale(actor->scale().x(),actor->scale().y(), actor->scale().z());
         node->attachObject(ent);

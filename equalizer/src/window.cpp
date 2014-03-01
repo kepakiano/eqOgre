@@ -54,41 +54,8 @@ namespace vr
         {
             Ogre::NameValuePairList params; // typedef std::map<std::string,std::string>
 
-            Display* const display = glxWindow->getXDisplay();
-            XSync(display, false);
-
-            const char* displayString = DisplayString( display );
-            const boost::regex regex( ":([0-9]+)\\." );
-            boost::cmatch match;
-            unsigned displayNum = 0;
-            if( boost::regex_match( displayString, match, regex ))
-                displayNum = std::atoi( match[1].first );
-
-            XWindowAttributes wa;
-            XGetWindowAttributes( display, parentWnd, &wa );
-            Screen* screen = wa.screen;
-            Visual* visual = wa.visual;
-
-            const int screenNumber = XScreenNumberOfScreen(screen);
-            XVisualInfo info;
-
-#if (LUNCHBOX_VERSION_MAJOR >= 1) && (LUNCHBOX_VERSION_MINOR >= 7) &&  (LUNCHBOX_VERSION_PATCH >= 1)
-            lunchbox::setZero( &info, sizeof( XVisualInfo ));
-#else
-            memset(&info, 0, sizeof(XVisualInfo));
-#endif
-            info.visual = visual;
-            info.visualid = XVisualIDFromVisual(visual);
-            info.screen = screenNumber;
-            info.depth = 32;
-
-            params["externalWindowHandle"] =
-                Ogre::StringConverter::toString( displayNum ) + ":" +
-                Ogre::StringConverter::toString( unsigned(screenNumber)) + ":" +
-                Ogre::StringConverter::toString( unsigned( parentWnd )) + ":" +
-                Ogre::StringConverter::toString( size_t( &info ));
-
             params["externalGLControl"] = Ogre::String("True");
+            params["currentGLContext"] = Ogre::StringConverter::toString(glewGetContext());
 
             const eq::PixelViewport& pvp  = getPixelViewport();
 

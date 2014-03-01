@@ -43,12 +43,8 @@ public:
               );
 
 
-//    virtual co::DataOStream&  operator << (co::DataOStream& os);
     virtual void writeToStream(co::DataOStream& os) const;
     virtual void loadFromStream (co::DataIStream& is);
-
-    SerializableDiffActor & operator =(const SerializableDiffActor&);
-
 };
 
 #endif // SERIALIZABLEDIFFACTOR_H
