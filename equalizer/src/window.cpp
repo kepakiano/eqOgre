@@ -22,7 +22,6 @@
 #include "../headers/node.h"
 #include "../../ogre/headers/ogreapplication.h"
 
-#include <eq/client/system.h>
 #include <OgreRoot.h>
 #include <boost/regex.hpp>
 
