@@ -24,6 +24,7 @@
 
 #include <lunchbox/os.h>
 #include <eq/client/system.h>
+
 #include <OgreRoot.h>
 #include <boost/regex.hpp>
 
@@ -55,7 +56,7 @@ namespace vr
             Ogre::NameValuePairList params; // typedef std::map<std::string,std::string>
 
             params["externalGLControl"] = Ogre::String("True");
-            params["currentGLContext"] = Ogre::StringConverter::toString(glewGetContext());
+            params["currentGLContext"] = Ogre::String("True");
 
             const eq::PixelViewport& pvp  = getPixelViewport();
 

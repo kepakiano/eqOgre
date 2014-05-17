@@ -35,7 +35,7 @@ project(eqOgre C CXX)
 #
 find_package(GLUT REQUIRED)
 find_package(Equalizer REQUIRED)
-find_package(Boost REQUIRED regex)
+find_package(Boost REQUIRED regex system)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(OGRE REQUIRED OGRE)
 
@@ -79,6 +79,11 @@ add_executable(eqOgre
   datastructures/headers/vec3.h
   datastructures/headers/vec4.h
 )
+
+if(EQUALIZER_USE_X11)
+  list(APPEND EQUALIZER_LIBRARIES X11)
+endif()
+
 set_target_properties(eqOgre PROPERTIES OUTPUT_NAME eqOgre)
 target_link_libraries(eqOgre
   ${EQUALIZER_LIBRARIES}
@@ -88,6 +93,7 @@ target_link_libraries(eqOgre
   ${OPENGL_glu_LIBRARY}
   ${OGRE_LIBRARIES}
   ${Boost_REGEX_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
 )
 
 string(REPLACE "." " " LUNCHBOX_VERSION_LIST "${LUNCHBOX_VERSION}")
