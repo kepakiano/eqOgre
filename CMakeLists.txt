@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013
+# Copyright (C) 2013-2014
 # Sebastian Schmitz <sschmitz@informatik.uni-siegen.de>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@ cmake_minimum_required(VERSION 2.8)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 cmake_policy(SET CMP0015 NEW)
 
-add_definitions(-std=c++0x)
+add_definitions(-std=c++0x -g)
 
 #
 # Project name and languages
@@ -35,7 +35,7 @@ project(eqOgre C CXX)
 #
 find_package(GLUT REQUIRED)
 find_package(Equalizer REQUIRED)
-find_package(Boost REQUIRED regex system)
+find_package(Boost REQUIRED system)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(OGRE REQUIRED OGRE)
 
@@ -51,11 +51,12 @@ link_directories(
     ${EQUALIZER_LIBRARY_DIRS}
     ${GLUT_LIBRARY_DIRS}
     ${GLEWMX_LIBRARY_DIRS}
-    ${OGRE_LIBRARIES}
     ${Boost_LIBRARY_DIRS}
+    ${OGRE_LIBRARY_DIRS}
 )
 
-add_definitions(-DPACKAGE_NAME="eqOgre" -DPACKAGE_VERSION="1.0"
+# Definition of CO_IGNORE_BYTESWAP to solve an undefined reference, see http://software.1713.n2.nabble.com/Framedata-unresolved-symbol-lunchbox-byteswap-td7583159.html
+add_definitions(-DPACKAGE_NAME="eqOgre" -DPACKAGE_VERSION="1.1"
   -DCO_IGNORE_BYTESWAP)
 
 add_executable(eqOgre
@@ -92,18 +93,8 @@ target_link_libraries(eqOgre
   ${OPENGL_gl_LIBRARY}
   ${OPENGL_glu_LIBRARY}
   ${OGRE_LIBRARIES}
-  ${Boost_REGEX_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
 )
-
-string(REPLACE "." " " LUNCHBOX_VERSION_LIST "${LUNCHBOX_VERSION}")
-SEPARATE_ARGUMENTS(LUNCHBOX_VERSION_LIST)
-LIST(GET LUNCHBOX_VERSION_LIST 0 LUNCHBOX_VERSION_MAJOR)
-LIST(GET LUNCHBOX_VERSION_LIST 1 LUNCHBOX_VERSION_MINOR)
-LIST(GET LUNCHBOX_VERSION_LIST 2 LUNCHBOX_VERSION_PATCH)
-add_definitions(-DLUNCHBOX_VERSION_MAJOR=${LUNCHBOX_VERSION_MAJOR})
-add_definitions(-DLUNCHBOX_VERSION_MINOR=${LUNCHBOX_VERSION_MINOR})
-add_definitions(-DLUNCHBOX_VERSION_PATCH=${LUNCHBOX_VERSION_PATCH})
 
 install(TARGETS eqOgre RUNTIME DESTINATION bin)
 install(FILES

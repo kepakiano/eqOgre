@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013
+* Copyright (C) 2013-2014
 * Sebastian Schmitz <sschmitz@informatik.uni-siegen.de>
 *
 * This program is free software; you can redistribute it and/or modify
@@ -73,22 +73,9 @@ namespace vr {
 
         cam->setCustomProjectionMatrix(true, toOgreMatrix(frustum.compute_matrix()));
 
-        // Get current camera properties
-        const Ogre::Vector3 eye( frame_data.data.camera_pos[0],
-                                 frame_data.data.camera_pos[1],
-                                 frame_data.data.camera_pos[2] );
-        const Ogre::Vector3 look_at( frame_data.data.camera_look_at[0],
-                                  frame_data.data.camera_look_at[1],
-                                  frame_data.data.camera_look_at[2]);
-        const Ogre::Vector3 up( frame_data.data.camera_up[0],
-                                frame_data.data.camera_up[1],
-                                frame_data.data.camera_up[2]);
-
-        // Calculate the view matrix from the camera properties
-        Ogre::Matrix4 ogreViewMatrix = calcViewMatrix(eye, look_at, up);
         const eq::Matrix4f eqViewMatrix = getHeadTransform();
-        // Adjust it according to equalizer's view matrix
-        ogreViewMatrix = toOgreMatrix(eqViewMatrix) * ogreViewMatrix;
+        // Adjust the view matrix according to equalizer's view matrix
+        Ogre::Matrix4 ogreViewMatrix = toOgreMatrix(eqViewMatrix);
         cam->setCustomViewMatrix(true, ogreViewMatrix);
         cam->setNearClipDistance(frustum.near_plane());
         cam->setFarClipDistance(frustum.far_plane());
@@ -104,22 +91,4 @@ namespace vr {
         // Render
         window->render();
     }
-
-    Ogre::Matrix4 Channel::calcViewMatrix( Ogre::Vector3 eye, Ogre::Vector3 target, Ogre::Vector3 up ) const
-    {
-        Ogre::Vector3 zaxis = -(target - eye).normalisedCopy();    // The "look-at" vector.
-        Ogre::Vector3 xaxis = (up.crossProduct(zaxis)).normalisedCopy();// The "right" vector.
-        Ogre::Vector3 yaxis = zaxis.crossProduct(xaxis);     // The "up" vector.
-
-        // Create a 4x4 orientation matrix from the right, up, and at vectors
-        Ogre::Matrix4 orientation = {
-            xaxis.x, xaxis.y, xaxis.z, 0,
-            yaxis.x, yaxis.y, yaxis.z, 0,
-            zaxis.x, zaxis.y, zaxis.z, 0,
-              0,       0,       0,     1
-        };
-        return orientation;
-    }
-
-
 }

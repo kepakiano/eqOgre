@@ -8,7 +8,7 @@ particle_system Space/Sun
     billboard_type  point
  
     // Area emitter
-    emitter Ellipsoid
+    emitter Point
     {
         angle           30
         emission_rate   30

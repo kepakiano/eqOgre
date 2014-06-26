@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013
+* Copyright (C) 2013-2014
 * Sebastian Schmitz <sschmitz@informatik.uni-siegen.de>
 *
 * This program is free software; you can redistribute it and/or modify

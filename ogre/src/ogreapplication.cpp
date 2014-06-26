@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013
+* Copyright (C) 2013-2014
 * Sebastian Schmitz <sschmitz@informatik.uni-siegen.de>
 *
 * This program is free software; you can redistribute it and/or modify
@@ -23,6 +23,11 @@
 #include <OgreRenderSystem.h>
 #include <OgreEntity.h>
 #include <OgreMeshManager.h>
+#include <OgreCamera.h>
+#include <OgreLogManager.h>
+#include <OgreTextureManager.h>
+#include <OgreViewport.h>
+#include <OgreSceneNode.h>
 
 #include "../../datastructures/headers/ogreactor.h"
 #include "../../datastructures/headers/diffactor.h"
@@ -30,8 +35,6 @@
 #include "../../datastructures/headers/vec4.h"
 
 #include <OgreParticleSystem.h>
-
-#define SAFE_DELETE(x) if(x) delete x; x=NULL;
 
 Ogre::Quaternion toOgreQuaternion(const Vec4 & vec)
 {
@@ -51,9 +54,9 @@ OgreApplication::OgreApplication()
 }
 OgreApplication::~OgreApplication()
 {
-    SAFE_DELETE(mRoot);
-    SAFE_DELETE(mCamera);
-    SAFE_DELETE(mSceneMgr);
+    delete mRoot;
+    delete mCamera;
+    delete mSceneMgr;
 }
 
 bool OgreApplication::initStart(void)
@@ -89,6 +92,8 @@ bool OgreApplication::initStart(void)
         }
     }
 
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../assets/", "FileSystem");
+
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../assets/particles", "FileSystem");
 
     // Do not add this to the application
@@ -97,14 +102,14 @@ bool OgreApplication::initStart(void)
     rs->setConfigOption("Full Screen", "No");
     rs->setConfigOption("Video Mode", "800 x 600 @ 32-bit colour");
     rs->setStencilCheckEnabled(true);
-    rs->setStencilBufferParams();
+
+    mRoot->initialise(false);
 
     running = true;
     return true;
 }
 bool OgreApplication::initFinish(std::list<std::shared_ptr<OgreActor>> actors)
 {
-    mRoot->initialise(false);
 
     // Set default mipmap level (note: some APIs ignore this)
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
@@ -165,7 +170,7 @@ void OgreApplication::createScene(std::list<std::shared_ptr<OgreActor> > actors)
     directionalLight->setSpecularColour(Ogre::ColourValue(1.0, 1.0, 1.0));
     directionalLight->setDirection(Ogre::Vector3( 0, -1, -1 ));
 
-    Ogre::Vector3 sunPosition(15, 15, -100);
+    Ogre::Vector3 sunPosition(15, 15, -90);
     Ogre::Light* pointLight = mSceneMgr->createLight("pointLight");
     pointLight->setType(Ogre::Light::LT_POINT);
     pointLight->setPosition(sunPosition);
@@ -179,6 +184,7 @@ void OgreApplication::createScene(std::list<std::shared_ptr<OgreActor> > actors)
 
 void OgreApplication::updateNodes(std::list<std::shared_ptr<OgreActor> > newActors, std::list<std::shared_ptr<DiffActor> > diffActor)
 {
+
     for(std::shared_ptr<OgreActor> actor : newActors){
         addActor(actor);
     }
