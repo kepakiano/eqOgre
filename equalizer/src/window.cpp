@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013
+* Copyright (C) 2013-2014
 * Sebastian Schmitz <sschmitz@informatik.uni-siegen.de>
 *
 * This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 #include <eq/client/system.h>
 
 #include <OgreRoot.h>
-#include <boost/regex.hpp>
+#include <OgreViewport.h>
 
 namespace vr
 {
@@ -57,16 +57,17 @@ namespace vr
 
             params["externalGLControl"] = Ogre::String("True");
             params["currentGLContext"] = Ogre::String("True");
+//            params["parentWindowHandle"] = Ogre::StringConverter::toString((unsigned long)(parentWnd));
 
             const eq::PixelViewport& pvp  = getPixelViewport();
 
             // create window by size of pvp.
             Pipe *pipe = static_cast<Pipe *>(getPipe());
             Ogre::Root *root = pipe->_ogre->getRoot();
+
             mWindow = root->createRenderWindow( getName(), pvp.w, pvp.h, false,
                                                 &params );
             mWindow->setActive(true);
-            mWindow->setDeactivateOnFocusChange(false);
 
             return true;
         }
