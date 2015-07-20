@@ -23,7 +23,7 @@
 #include "datastructures/headers/ogreactor.h"
 
 int start_x = -5, end_x = 5;
-Vec3 axis(0, 2, -5);
+Vec3 axis(0, 1.5, -2);
 
 
 // Let the ogreheads move like a wave so that we can see something is happening
@@ -33,7 +33,7 @@ std::list<std::shared_ptr<DiffActor>> getDiffActors(size_t frame)
     for(int x = start_x; x <= end_x; x++){
         Vec4 rotation(0,sin(x/2.0f + frame/50.0f),0,1);
         Vec3 position = axis;
-        position = position + Vec3(x, sin(x/2.0f + frame/50.0f), 0.0f);
+        position = position + Vec3(x, sin(x/2.0f + frame/50.0f)*0.5, 0.0f);
 
         std::stringstream ss;
         ss << "object_" << x;

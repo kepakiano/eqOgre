@@ -77,6 +77,7 @@ add_executable(eqOgre
 
   datastructures/src/ogreactor.cpp
   datastructures/src/diffactor.cpp
+
   datastructures/headers/vec3.h
   datastructures/headers/vec4.h
 )
