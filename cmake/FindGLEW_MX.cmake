@@ -6,7 +6,7 @@ find_path(_glew_mx_INCLUDE_DIR GL/glew.h
 
 find_library(_glew_mx_LIBRARY
   NAMES GLEWmx GLEW glew glew32
-  PATHS /usr/lib /usr/local/lib)
+  PATHS /usr/lib /usr/local/lib /usr/lib64)
 
 if(_glew_mx_INCLUDE_DIR AND _glew_mx_LIBRARY)
   set(TEST_SRC ${CMAKE_BINARY_DIR}/glew_test.cpp)

@@ -34,9 +34,10 @@ project(eqOgre C CXX)
 # Main application: eqOgre
 #
 find_package(GLUT REQUIRED)
-find_package(Equalizer REQUIRED)
+find_package(Equalizer REQUIRED EQUALIZER)
 find_package(Boost REQUIRED system)
 find_package(PkgConfig REQUIRED)
+find_package(MPI REQUIRED)
 pkg_check_modules(OGRE REQUIRED OGRE)
 
 include_directories(
@@ -44,8 +45,10 @@ include_directories(
     ${GLUT_INCLUDE_DIR}
     ${GLEWMX_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIR}
+    ${MPI_CXX_INCLUDE_PATH}
     ${OGRE_INCLUDE_DIRS}
 )
+
 
 link_directories(
     ${EQUALIZER_LIBRARY_DIRS}
@@ -82,9 +85,6 @@ add_executable(eqOgre
   datastructures/headers/vec4.h
 )
 
-if(EQUALIZER_USE_X11)
-  list(APPEND EQUALIZER_LIBRARIES X11)
-endif()
 
 set_target_properties(eqOgre PROPERTIES OUTPUT_NAME eqOgre)
 target_link_libraries(eqOgre
@@ -93,6 +93,7 @@ target_link_libraries(eqOgre
   ${GLEWMX_LIBRARIES}
   ${OPENGL_gl_LIBRARY}
   ${OPENGL_glu_LIBRARY}
+  ${MPI_CXX_LIBRARIES}
   ${OGRE_LIBRARIES}
   ${Boost_SYSTEM_LIBRARY}
 )
