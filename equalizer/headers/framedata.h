@@ -21,7 +21,7 @@
 #define FRAMEDATA_H
 
 #include <eq/eq.h>
-#include <eq/client/system.h>
+#include <eq/system.h>
 #include <vector>
 #include <memory>
 

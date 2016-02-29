@@ -47,8 +47,8 @@ Ogre::Vector3 toOgreVector3(const Vec3 & vec)
 }
 
 OgreApplication::OgreApplication()
-    : mPluginsCfg(Ogre::StringUtil::BLANK),
-      mResourcesCfg(Ogre::StringUtil::BLANK),
+    : mPluginsCfg(Ogre::BLANKSTRING),
+      mResourcesCfg(Ogre::BLANKSTRING),
       mRoot(0)
 {
 }

@@ -23,7 +23,7 @@
 #include "../../ogre/headers/ogreapplication.h"
 
 #include <lunchbox/os.h>
-#include <eq/client/system.h>
+#include <eq/system.h>
 
 #include <OgreRoot.h>
 #include <OgreViewport.h>
